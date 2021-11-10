@@ -39,6 +39,7 @@ class ChangesReader {
     this.continue = true // whether to poll again
     this.qs = {} // extra querystring parameters
     this.selector = null
+    this.fields = null
   }
 
   // prevent another poll happening
@@ -99,8 +100,7 @@ class ChangesReader {
           req.data.fields = self.fields
         }
         Object.assign(req.params, opts.qs)
-        
-        Object.assign(req.body, opts.body)
+        // Object.assign(req.data, opts.body)
 
         // make HTTP request to get up to batchSize changes from the feed
         try {
@@ -206,6 +206,7 @@ class ChangesReader {
     if (self.selector) {
       req.params.filter = '_selector'
       req.data.selector = self.selector
+      req.data.fields =  self.fields
     }
     const lin = liner()
     const cp = changeProcessor(self.ee, self.batchSize)
