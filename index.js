@@ -93,11 +93,14 @@ class ChangesReader {
         if (self.fastChanges) {
           req.params.seq_interval = self.batchSize
         }
-        if (self.selector) {
+        if (self.selector  || self.fields) {
           req.params.filter = '_selector'
           req.data.selector = self.selector
+          req.data.fields = self.fields
         }
         Object.assign(req.params, opts.qs)
+        
+        Object.assign(req.body, opts.body)
 
         // make HTTP request to get up to batchSize changes from the feed
         try {
